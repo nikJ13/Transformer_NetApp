@@ -1,0 +1,33 @@
+import torch
+import torch.nn as nn
+import math
+
+class PositionalEncoding(nn.Module):
+    def __init__(self, seq_len, d_model):
+        super().__init__()
+        self.seq_len = seq_len
+        # for each sequence making a pe
+        self.pe = torch.zeros(seq_len, d_model)
+        print("initial pe", self.pe)
+        # tracking the positions of the sequence
+        self.positions = torch.arange(0,seq_len).unsqueeze(1)
+        self.dims = torch.arange(0, d_model, 2)
+        self.div = torch.pow(1000, -2*self.dims/d_model)
+        print("positions shape", self.positions.shape, "div shape",self.div.shape)
+        self.pe[:,::2] = torch.sin(self.positions * self.div)
+        self.pe[:,1::2] = torch.cos(self.positions * self.div)
+
+    def forward(self, x):
+        print("here is the unsqueezed one",self.pe.unsqueeze(0))
+        return x + self.pe.unsqueeze(0)
+    
+#testing
+# x = torch.tensor([[
+#     [2, -1, 3, -2],
+#     [1, 2, -1, 1.5],
+#     [-1, 0.5, 2, -0.5]
+# ]])
+
+# p = PositionalEncoding(3,4)
+# output = p(x)
+# print(output.shape)
