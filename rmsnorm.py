@@ -8,10 +8,10 @@ class RMSNorm(nn.Module):
         self.weights = nn.Parameter(torch.ones(d_model))
 
     def forward(self, x):
-        print("how x looks",x)
+        #print("how x looks",x)
         rms = torch.sqrt(torch.mean(x**2, dim=-1, keepdim=True) + self.eps)
-        print("this is rms", rms)
-        print(self.weights)
+        #print("this is rms", rms)
+        #print(self.weights)
         output = (x / rms) * self.weights
         return output
 
