@@ -11,11 +11,11 @@ class Transformer(nn.Module):
         self.pos = PositionalEncoding(max_seq_len, d_model)
         self.linear_final = nn.Linear(d_model, vocab_size)
     
-    def forward(self, x):
+    def forward(self, x, padding_mask = None):
         x = self.embd(x)
         x = self.pos(x)
         for b in self.blocks:
-            x = b(x)
+            x = b(x, padding_mask)
         x = self.linear_final(x)
         return x
 

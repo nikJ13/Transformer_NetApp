@@ -12,8 +12,8 @@ class Block(nn.Module):
         self.attention = Attention(d_model, max_seq_len)
         self.ffn = FFN(d_model, hidden_dim, d_model)
     
-    def forward(self, x):
-        x = x + self.attention(x)
+    def forward(self, x, padding_mask=None):
+        x = x + self.attention(x, padding_mask)
         x = self.norm1(x)
         x = x + self.ffn(x)
         x = self.norm2(x)
